@@ -22,6 +22,7 @@ df['TimeStamp'] = df['TimeStamp'].map(lambda x: str(x).replace("T", " ").rstrip(
 #Drop the first row and any row that contains the column names,
 # this happens because of the concat used to create the larger file
 df.drop(df.index[[0]], inplace=True)
+df = df.dropna()
 df = df[df.AvailabilityZone != "AvailabilityZone"]
 
 # Convert the timestamps to python ones
@@ -32,7 +33,7 @@ df.index = df.TimeStamp
 
 #drop the old timestamp row
 df.drop('TimeStamp', axis=1, inplace=True)
-
+df = df.truncate(before='2016-10-13 00:00:00', after='2016-12-11 00:00:00')
 # create the new csv file with the filtered data
 df.to_csv(outfile)
 print(time.time()-start)
